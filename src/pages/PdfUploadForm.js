@@ -4,6 +4,8 @@ import './PdfUploadForm.css';
 
 const categories = ['Math', 'English', 'Science', 'Geography'];
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+
 const PdfUploadForm = () => {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
@@ -44,7 +46,7 @@ const PdfUploadForm = () => {
       formData.append('category', category);
       formData.append('tags', tags);
       const token = localStorage.getItem('admin-token');
-      const res = await axios.post('/api/worksheets/upload', formData, {
+      const res = await axios.post(`${backendUrl}/api/worksheets/upload`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`
         },

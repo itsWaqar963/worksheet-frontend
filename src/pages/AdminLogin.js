@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AdminLogin.css';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+console.log('Backend URL in use:', backendUrl);
+
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +23,7 @@ const AdminLogin = () => {
     setLoading(true);
     try {
       const payload = { username, password };
-      const res = await axios.post('http://localhost:5000/api/admin/login', payload);
+      const res = await axios.post(`${backendUrl}/api/admin/login`, payload);
       if (res.data.success && res.data.token) {
         localStorage.setItem('admin-auth', 'true');
         localStorage.setItem('admin-token', res.data.token);

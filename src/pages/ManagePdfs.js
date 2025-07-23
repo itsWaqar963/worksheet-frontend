@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './ManagePdfs.css';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+
 const ManagePdfs = () => {
   const [pdfs, setPdfs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +15,7 @@ const ManagePdfs = () => {
       setLoading(true);
       setError('');
       try {
-        const res = await axios.get('/api/worksheets');
+        const res = await axios.get(`${backendUrl}/api/worksheets`);
         setPdfs(res.data);
       } catch (err) {
         setError('Failed to fetch PDFs.');
@@ -30,7 +32,7 @@ const ManagePdfs = () => {
     setError('');
     try {
       const token = localStorage.getItem('admin-token');
-      await axios.delete(`/api/worksheets/${id}`, {
+      await axios.delete(`${backendUrl}/api/worksheets/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       setPdfs(pdfs.filter(pdf => pdf._id !== id));

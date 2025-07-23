@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './ManageAdmins.css';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+
 const ManageAdmins = () => {
   const [admins, setAdmins] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +21,7 @@ const ManageAdmins = () => {
       setError('');
       try {
         const token = localStorage.getItem('admin-token');
-        const res = await axios.get('/api/admin/admins', {
+        const res = await axios.get(`${backendUrl}/api/admin/admins`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         setAdmins(res.data);
@@ -40,7 +42,7 @@ const ManageAdmins = () => {
     setSuccess('');
     try {
       const token = localStorage.getItem('admin-token');
-      const res = await axios.post('/api/admin/admins', {
+      const res = await axios.post(`${backendUrl}/api/admin/admins`, {
         username: newUsername,
         email: newEmail,
         password: newPassword
@@ -65,7 +67,7 @@ const ManageAdmins = () => {
     setError('');
     try {
       const token = localStorage.getItem('admin-token');
-      await axios.delete(`/api/admin/admins/${id}`, {
+      await axios.delete(`${backendUrl}/api/admin/admins/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       setAdmins(admins.filter(admin => admin._id !== id));
