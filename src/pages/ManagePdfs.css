@@ -1,0 +1,84 @@
+.manage-pdfs {
+  max-width: 900px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(58,134,255,0.06);
+  padding: 2rem 2.5rem;
+}
+.manage-pdfs h2 {
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.pdfs-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pdfs-controls input,
+.pdfs-controls select {
+  padding: 0.6rem;
+  border-radius: 5px;
+  border: 1px solid #e0e6f7;
+  font-size: 1rem;
+  background: #f9fafc;
+  min-width: 140px;
+}
+.pdfs-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+.pdfs-table th,
+.pdfs-table td {
+  padding: 0.8rem 0.6rem;
+  border-bottom: 1px solid #e0e6f7;
+  text-align: left;
+}
+.pdfs-table th {
+  color: var(--primary);
+  font-weight: 600;
+}
+.edit-btn,
+.delete-btn {
+  padding: 0.4rem 0.9rem;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: background 0.2s, color 0.2s;
+}
+.edit-btn {
+  background: var(--secondary);
+  color: #22223b;
+}
+.edit-btn:hover {
+  background: var(--primary);
+  color: #fff;
+}
+.delete-btn {
+  background: var(--accent);
+  color: #fff;
+}
+.delete-btn:hover {
+  background: #ff1744;
+}
+@media (max-width: 700px) {
+  .manage-pdfs {
+    padding: 1rem 0.3rem;
+  }
+  .pdfs-controls {
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: stretch;
+  }
+  .pdfs-table th,
+  .pdfs-table td {
+    padding: 0.5rem 0.2rem;
+  }
+} 

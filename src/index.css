@@ -1,0 +1,44 @@
+/* CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  background: #f9fafc;
+  color: #22223b;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+:root {
+  --primary: #3a86ff;
+  --secondary: #ffbe0b;
+  --accent: #ff006e;
+  --background: #f9fafc;
+  --header-bg: #fff;
+  --footer-bg: #f1f3f8;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: var(--accent);
+}
+
+header, footer {
+  background: var(--header-bg);
+  padding: 1rem 0;
+  box-shadow: 0 2px 8px rgba(58,134,255,0.04);
+}
+
+main {
+  padding: 2rem 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+} 
