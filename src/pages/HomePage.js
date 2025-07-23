@@ -14,9 +14,15 @@ const HomePage = () => {
       setError('');
       try {
         const res = await axios.get('/api/worksheets');
-        setWorksheets(res.data);
+        // Defensive: ensure res.data is always an array
+        if (Array.isArray(res.data)) {
+          setWorksheets(res.data);
+        } else {
+          setWorksheets([]);
+        }
       } catch (err) {
         setError('Failed to fetch worksheets.');
+        setWorksheets([]); // Defensive: set to empty array on error
       } finally {
         setLoading(false);
       }
@@ -24,9 +30,10 @@ const HomePage = () => {
     fetchWorksheets();
   }, []);
 
-  const filteredWorksheets = worksheets.filter(w =>
-    w.title.toLowerCase().includes(search.toLowerCase()) ||
-    w.description.toLowerCase().includes(search.toLowerCase())
+  // Defensive: ensure worksheets is always an array before filtering
+  const filteredWorksheets = (Array.isArray(worksheets) ? worksheets : []).filter(w =>
+    w.title && w.title.toLowerCase().includes(search.toLowerCase()) ||
+    w.description && w.description.toLowerCase().includes(search.toLowerCase())
   );
 
   const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
