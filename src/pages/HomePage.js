@@ -378,8 +378,10 @@ const HomePage = () => {
               const liked = likedWorksheets.includes(w._id);
               const likeCount = likesMap[w._id] ?? (typeof w.likes === 'number' ? w.likes : 0);
               return (
-                <div key={w._id} style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(123,110,246,0.08)', padding: '1.5rem', minWidth: 240, maxWidth: 320, flex: '1 1 260px', display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
-                  <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{w.title}</div>
+                <div key={w._id} style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(123,110,246,0.08)', padding: '1.5rem', minWidth: 240, maxWidth: 320, flex: '1 1 260px', display: 'flex', flexDirection: 'column', gap: '0.7rem', alignItems: 'center' }}>
+                  {/* PDF Preview at the top of the card */}
+                  <PDFPreview fileUrl={w.fileUrl} width={120} height={160} />
+                  <div style={{ fontWeight: 600, fontSize: '1.1rem', textAlign: 'center' }}>{w.title}</div>
                   {/* Like button and count */}
                   <div style={{ margin: '0.2rem 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: 8 }}>
                     <button
@@ -399,24 +401,8 @@ const HomePage = () => {
                     >
                       {liked ? `Liked (${likeCount})` : `Like (${likeCount})`}
                     </button>
-                    <button
-                      onClick={() => setPreviewUrl(w.fileUrl)}
-                      style={{
-                        background: '#ecebfc',
-                        color: '#7b6ef6',
-                        border: 'none',
-                        borderRadius: 8,
-                        padding: '0.3rem 1.1rem',
-                        fontWeight: 600,
-                        fontSize: '1rem',
-                        cursor: 'pointer',
-                        transition: 'background 0.15s',
-                      }}
-                    >
-                      Preview
-                    </button>
                   </div>
-                  <div style={{ color: '#444', fontSize: '0.98rem' }}>{w.description}</div>
+                  <div style={{ color: '#444', fontSize: '0.98rem', textAlign: 'center' }}>{w.description}</div>
                   <div style={{ fontSize: '0.9rem', color: '#7b6ef6', fontWeight: 500 }}>{w.category}</div>
                   <div style={{ fontSize: '0.9rem', color: '#7b6ef6', fontWeight: 500 }}>{w.grade} {w.subject && `| ${w.subject}`}</div>
                   {w.fileUrl && (
