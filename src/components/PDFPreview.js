@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 export default function PDFPreview({ fileUrl }) {
-  const [loading, setLoading] = useState(true);
+  const [pdfBlob, setPdfBlob] = useState(null);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!fileUrl) return;
+    setPdfBlob(null);
+    setError(null);
+    fetch(fileUrl)
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch PDF');
+        return res.blob();
+      })
+      .then(blob => setPdfBlob(blob))
+      .catch(err => setError(err.message));
+  }, [fileUrl]);
+
   return (
     <div style={{ minWidth: 220, minHeight: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <Document
-        file={fileUrl}
-        loading={<div>Loading PDF preview...</div>}
-        onLoadSuccess={() => setLoading(false)}
-        onLoadError={err => { setError(err.message); setLoading(false); }}
-      >
-        <Page pageNumber={1} width={220} />
-      </Document>
-      {error && <div style={{ color: 'red', marginTop: 8 }}>Failed to load PDF preview</div>}
+      {error && <div style={{ color: 'red', marginTop: 8 }}>Failed to load PDF preview: {error}</div>}
+      {!pdfBlob && !error && <div>Loading PDF preview...</div>}
+      {pdfBlob && (
+        <Document file={pdfBlob}>
+          <Page pageNumber={1} width={220} />
+        </Document>
+      )}
     </div>
   );
 } 
