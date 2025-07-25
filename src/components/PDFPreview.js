@@ -3,7 +3,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.js`;
 
-export default function PDFPreview({ fileUrl }) {
+export default function PDFPreview({ fileUrl, width = 120, height = 160 }) {
   const [pdfBlob, setPdfBlob] = useState(null);
   const [error, setError] = useState(null);
 
@@ -11,7 +11,6 @@ export default function PDFPreview({ fileUrl }) {
     if (!fileUrl) return;
     setPdfBlob(null);
     setError(null);
-
     fetch(fileUrl)
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch PDF');
@@ -24,35 +23,36 @@ export default function PDFPreview({ fileUrl }) {
         setPdfBlob(blob);
       })
       .catch(err => {
-        console.error('Fetch Error:', err);
-        setError(err.message);
+        setError('Preview unavailable');
       });
   }, [fileUrl]);
 
   return (
     <div style={{
-      minWidth: 220,
-      minHeight: 300,
+      width,
+      height,
+      minWidth: width,
+      minHeight: height,
+      background: '#f6f5ff',
+      border: '1.5px solid #a89af7',
+      borderRadius: 8,
+      boxShadow: '0 2px 8px rgba(123,110,246,0.07)',
       display: 'flex',
-      flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      overflow: 'hidden',
+      marginBottom: 8
     }}>
-      {error && <div style={{ color: 'red', marginTop: 8 }}>Failed to load PDF preview: {error}</div>}
-      {!pdfBlob && !error && <div>Loading PDF preview...</div>}
+      {error && <div style={{ color: '#b00', fontSize: 12, textAlign: 'center' }}>{error}</div>}
+      {!pdfBlob && !error && <div style={{ color: '#7b6ef6', fontSize: 13 }}>Loading...</div>}
       {pdfBlob && (
         <Document
           file={pdfBlob}
-          onLoadError={(err) => {
-            console.error("PDF Load Error:", err);
-            setError("PDF failed to render.");
-          }}
-          onSourceError={(err) => {
-            console.error("PDF Source Error:", err);
-            setError("PDF source error.");
-          }}
+          loading=""
+          onLoadError={() => setError('Preview unavailable')}
+          onSourceError={() => setError('Preview unavailable')}
         >
-          <Page pageNumber={1} width={220} />
+          <Page pageNumber={1} width={width - 8} />
         </Document>
       )}
     </div>
