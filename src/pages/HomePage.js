@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './HomePage.css';
 import PDFPreview from '../components/PDFPreview';
+import WorksheetGrid from '../components/WorksheetGrid';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
@@ -374,73 +375,12 @@ const HomePage = () => {
           </div>
         </div>
       )}
-      <div style={{ width: '100%', maxWidth: 900, marginTop: 16 }}>
-        {loading ? (
-          <div>Loading worksheets...</div>
-        ) : filteredWorksheets.length === 0 ? (
-          <div>No worksheets found for the selected filters.</div>
-        ) : (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
-            {filteredWorksheets.map(w => {
-              const liked = likedWorksheets.includes(w._id);
-              const likeCount = likesMap[w._id] ?? (typeof w.likes === 'number' ? w.likes : 0);
-              return (
-                <div key={w._id} style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(123,110,246,0.08)', padding: '1.5rem', minWidth: 240, maxWidth: 320, flex: '1 1 260px', display: 'flex', flexDirection: 'column', gap: '0.7rem', alignItems: 'center' }}>
-                  {/* PDF Preview at the top of the card */}
-                  <PDFPreview fileUrl={w.fileUrl} width={120} height={160} />
-                  <div style={{ fontWeight: 600, fontSize: '1.1rem', textAlign: 'center' }}>{w.title}</div>
-                  {/* Like button and count */}
-                  <div style={{ margin: '0.2rem 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <button
-                      onClick={() => handleLike(w._id)}
-                      disabled={liked}
-                      style={{
-                        background: liked ? '#ecebfc' : '#7b6ef6',
-                        color: liked ? '#7b6ef6' : '#fff',
-                        border: 'none',
-                        borderRadius: 8,
-                        padding: '0.3rem 1.1rem',
-                        fontWeight: 600,
-                        fontSize: '1rem',
-                        cursor: liked ? 'not-allowed' : 'pointer',
-                        transition: 'background 0.15s',
-                      }}
-                    >
-                      {liked ? `Liked (${likeCount})` : `Like (${likeCount})`}
-                    </button>
-                  </div>
-                  <div style={{ color: '#444', fontSize: '0.98rem', textAlign: 'center' }}>{w.description}</div>
-                  <div style={{ fontSize: '0.9rem', color: '#7b6ef6', fontWeight: 500 }}>{w.category}</div>
-                  <div style={{ fontSize: '0.9rem', color: '#7b6ef6', fontWeight: 500 }}>{w.grade} {w.subject && `| ${w.subject}`}</div>
-                  {w.fileUrl && (
-                    <a
-                      href={w.fileUrl}
-                      className="download-btn"
-                      download
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: 'inline-block',
-                        background: '#7b6ef6',
-                        color: '#fff',
-                        padding: '0.7rem 1.5rem',
-                        borderRadius: 30,
-                        fontSize: '1.1rem',
-                        fontWeight: 600,
-                        textDecoration: 'none',
-                        marginTop: '0.5rem',
-                        transition: 'background 0.2s',
-                      }}
-                    >
-                      Download PDF
-                    </a>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      <WorksheetGrid
+        worksheets={filteredWorksheets}
+        likedWorksheets={likedWorksheets}
+        likesMap={likesMap}
+        onLike={handleLike}
+      />
     </div>
   );
 };
