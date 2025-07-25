@@ -211,13 +211,18 @@ const HomePage = () => {
       <h1 style={{ fontSize: '3rem', fontWeight: 700, color: '#7b6ef6', marginBottom: '2.5rem', letterSpacing: 1 }}>BBWORKSHEETS</h1>
       {/* Featured Worksheet of the Day */}
       {featuredWorksheet && (
-        <div style={{ width: '100%', maxWidth: 600, marginBottom: 32 }}>
-          <div style={{ fontWeight: 700, fontSize: '1.25rem', color: '#7b6ef6', marginBottom: 8 }}>Featured Worksheet of the Day</div>
-          <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(123,110,246,0.08)', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
-            <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{featuredWorksheet.title}</div>
-            <div style={{ color: '#444', fontSize: '0.98rem' }}>{featuredWorksheet.description}</div>
-            <div style={{ fontSize: '0.9rem', color: '#7b6ef6', fontWeight: 500 }}>{featuredWorksheet.category}</div>
-            <div style={{ fontSize: '0.9rem', color: '#7b6ef6', fontWeight: 500 }}>{featuredWorksheet.grade} {featuredWorksheet.subject && `| ${featuredWorksheet.subject}`}</div>
+        <div style={{ width: '100%', maxWidth: 700, marginBottom: 32, display: 'flex', alignItems: 'center', background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(123,110,246,0.08)', padding: 28, gap: 32 }}>
+          {/* PDF Preview on the left */}
+          <div style={{ flex: '0 0 auto' }}>
+            <PDFPreview fileUrl={featuredWorksheet.fileUrl} width={180} height={240} />
+          </div>
+          {/* Metadata on the right */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 10 }}>
+            <div style={{ fontWeight: 700, fontSize: '1.25rem', color: '#7b6ef6', marginBottom: 4 }}>Featured Worksheet of the Day</div>
+            <div style={{ fontWeight: 600, fontSize: '1.15rem', marginBottom: 2 }}>{featuredWorksheet.title}</div>
+            <div style={{ color: '#444', fontSize: '1rem', marginBottom: 2 }}>{featuredWorksheet.description}</div>
+            <div style={{ fontSize: '0.98rem', color: '#7b6ef6', fontWeight: 500, marginBottom: 2 }}>{featuredWorksheet.category}</div>
+            <div style={{ fontSize: '0.98rem', color: '#7b6ef6', fontWeight: 500, marginBottom: 10 }}>{featuredWorksheet.grade} {featuredWorksheet.subject && `| ${featuredWorksheet.subject}`}</div>
             {featuredWorksheet.fileUrl && (
               <a
                 href={featuredWorksheet.fileUrl}
@@ -229,13 +234,15 @@ const HomePage = () => {
                   display: 'inline-block',
                   background: '#7b6ef6',
                   color: '#fff',
-                  padding: '0.7rem 1.5rem',
+                  padding: '0.9rem 2.2rem',
                   borderRadius: 30,
-                  fontSize: '1.1rem',
-                  fontWeight: 600,
+                  fontSize: '1.15rem',
+                  fontWeight: 700,
                   textDecoration: 'none',
                   marginTop: '0.5rem',
                   transition: 'background 0.2s',
+                  textAlign: 'center',
+                  width: 'fit-content'
                 }}
               >
                 Download PDF
