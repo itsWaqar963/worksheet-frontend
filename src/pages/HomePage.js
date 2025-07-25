@@ -147,8 +147,9 @@ const HomePage = () => {
     const matchesSearch =
       w.title.toLowerCase().includes(search.toLowerCase()) ||
       w.description.toLowerCase().includes(search.toLowerCase());
+    const worksheetSubject = w.subject || 'Other';
     const matchesGrade = grade === 'All' || (w.grade && w.grade === grade);
-    const matchesSubject = subject === 'All' || (w.subject && w.subject === subject);
+    const matchesSubject = subject === 'All' || (worksheetSubject && worksheetSubject === subject);
     // Age group logic
     const worksheetAgeGroup = w.ageGroup || mapGradeToAgeGroup(w.grade);
     const matchesAgeGroup = ageGroup === 'All' || worksheetAgeGroup === ageGroup;
