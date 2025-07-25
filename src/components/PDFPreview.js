@@ -22,7 +22,7 @@ export default function PDFPreview({ fileUrl, width = 120, height = 160 }) {
         }
         setPdfBlob(blob);
       })
-      .catch(() => {
+      .catch(err => {
         setError('Preview unavailable');
       });
   }, [fileUrl]);
@@ -52,12 +52,7 @@ export default function PDFPreview({ fileUrl, width = 120, height = 160 }) {
           onLoadError={() => setError('Preview unavailable')}
           onSourceError={() => setError('Preview unavailable')}
         >
-          <Page
-            pageNumber={1}
-            width={width - 8}
-            renderTextLayer={false}
-            renderAnnotationLayer={false}
-          />
+          <Page pageNumber={1} width={width - 8} />
         </Document>
       )}
     </div>
