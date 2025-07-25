@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './HomePage.css';
+import PDFPreview from '../components/PDFPreview';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
@@ -76,6 +77,7 @@ const HomePage = () => {
   });
   const [likesMap, setLikesMap] = useState({}); // { worksheetId: likeCount }
   const [featuredWorksheet, setFeaturedWorksheet] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   useEffect(() => {
     const fetchWorksheets = async () => {
@@ -356,6 +358,15 @@ const HomePage = () => {
           </div>
         )}
       </div>
+      {/* PDF Preview Modal */}
+      {previewUrl && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(60,60,80,0.25)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 16px rgba(123,110,246,0.13)', padding: 24, position: 'relative', minWidth: 260, minHeight: 340, maxWidth: '90vw', maxHeight: '90vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <button onClick={() => setPreviewUrl(null)} style={{ position: 'absolute', top: 10, right: 10, background: '#ecebfc', color: '#7b6ef6', border: 'none', borderRadius: 8, padding: '0.3rem 1rem', fontWeight: 600, cursor: 'pointer', fontSize: '1rem' }}>Close</button>
+            <PDFPreview fileUrl={previewUrl} />
+          </div>
+        </div>
+      )}
       <div style={{ width: '100%', maxWidth: 900, marginTop: 16 }}>
         {loading ? (
           <div>Loading worksheets...</div>
@@ -387,6 +398,22 @@ const HomePage = () => {
                       }}
                     >
                       {liked ? `Liked (${likeCount})` : `Like (${likeCount})`}
+                    </button>
+                    <button
+                      onClick={() => setPreviewUrl(w.fileUrl)}
+                      style={{
+                        background: '#ecebfc',
+                        color: '#7b6ef6',
+                        border: 'none',
+                        borderRadius: 8,
+                        padding: '0.3rem 1.1rem',
+                        fontWeight: 600,
+                        fontSize: '1rem',
+                        cursor: 'pointer',
+                        transition: 'background 0.15s',
+                      }}
+                    >
+                      Preview
                     </button>
                   </div>
                   <div style={{ color: '#444', fontSize: '0.98rem' }}>{w.description}</div>
