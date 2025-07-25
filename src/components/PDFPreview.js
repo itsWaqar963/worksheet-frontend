@@ -6,6 +6,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.js`;
 export default function PDFPreview({ fileUrl, width = 120, height = 160 }) {
   const [pdfBlob, setPdfBlob] = useState(null);
   const [error, setError] = useState(null);
+  const [pageWidth, setPageWidth] = useState(width - 8);
+  const [pageHeight, setPageHeight] = useState(height - 8);
 
   useEffect(() => {
     if (!fileUrl) return;
@@ -26,6 +28,16 @@ export default function PDFPreview({ fileUrl, width = 120, height = 160 }) {
         setError('Preview unavailable');
       });
   }, [fileUrl]);
+
+  // Dynamically set the page size to fit the container
+  function onLoadSuccess(pdf) {
+    pdf.getPage(1).then(page => {
+      const viewport = page.getViewport({ scale: 1 });
+      const scale = Math.min((width - 8) / viewport.width, (height - 8) / viewport.height);
+      setPageWidth(viewport.width * scale);
+      setPageHeight(viewport.height * scale);
+    });
+  }
 
   return (
     <div style={{
@@ -49,10 +61,11 @@ export default function PDFPreview({ fileUrl, width = 120, height = 160 }) {
         <Document
           file={pdfBlob}
           loading=""
+          onLoadSuccess={onLoadSuccess}
           onLoadError={() => setError('Preview unavailable')}
           onSourceError={() => setError('Preview unavailable')}
         >
-          <Page pageNumber={1} width={width - 8} />
+          <Page pageNumber={1} width={pageWidth} height={pageHeight} />
         </Document>
       )}
     </div>
