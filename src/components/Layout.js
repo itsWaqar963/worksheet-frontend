@@ -5,13 +5,15 @@ import logo from '../assets/logo.png'; // Import your logo
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
-  const isAdmin = localStorage.getItem('admin-auth') === 'true';
-  const isSuperAdmin = localStorage.getItem('admin-username') === 'BackendBrew';
+  const isAdmin = sessionStorage.getItem('admin-auth') === 'true';
+  const isSuperAdmin = sessionStorage.getItem('admin-username') === 'BackendBrew';
 
   const handleLogout = () => {
-    localStorage.removeItem('admin-auth');
-    localStorage.removeItem('admin-token');
-    navigate('/admin-login');
+    sessionStorage.removeItem('admin-auth');
+    sessionStorage.removeItem('admin-token');
+    sessionStorage.removeItem('admin-username');
+    sessionStorage.removeItem('admin-login-time');
+    window.location.href = '/admin-login';
   };
 
   return (

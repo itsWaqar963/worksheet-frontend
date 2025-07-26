@@ -6,7 +6,10 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('admin-auth');
+    sessionStorage.removeItem('admin-auth');
+    sessionStorage.removeItem('admin-token');
+    sessionStorage.removeItem('admin-username');
+    sessionStorage.removeItem('admin-login-time');
     navigate('/admin-login');
   };
 

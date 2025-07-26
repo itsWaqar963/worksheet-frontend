@@ -20,7 +20,7 @@ const ManageAdmins = () => {
       setLoading(true);
       setError('');
       try {
-        const token = localStorage.getItem('admin-token');
+        const token = sessionStorage.getItem('admin-token');
         const res = await axios.get(`${backendUrl}/api/admin/admins`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -41,7 +41,7 @@ const ManageAdmins = () => {
     setError('');
     setSuccess('');
     try {
-      const token = localStorage.getItem('admin-token');
+      const token = sessionStorage.getItem('admin-token');
       const res = await axios.post(`${backendUrl}/api/admin/admins`, {
         username: newUsername,
         email: newEmail,
@@ -66,7 +66,7 @@ const ManageAdmins = () => {
     setRemovingId(id);
     setError('');
     try {
-      const token = localStorage.getItem('admin-token');
+      const token = sessionStorage.getItem('admin-token');
       await axios.delete(`${backendUrl}/api/admin/admins/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -79,7 +79,7 @@ const ManageAdmins = () => {
   };
 
   // Get current admin username from localStorage (set at login)
-  const currentAdmin = localStorage.getItem('admin-username');
+  const currentAdmin = sessionStorage.getItem('admin-username');
 
   return (
     <section className="manage-admins">

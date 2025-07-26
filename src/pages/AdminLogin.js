@@ -6,12 +6,41 @@ import './AdminLogin.css';
 const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 console.log('Backend URL in use:', backendUrl);
 
+const SESSION_TIMEOUT_MINUTES = 30;
+
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Auto-logout effect
+  React.useEffect(() => {
+    const checkSession = () => {
+      const loginTime = sessionStorage.getItem('admin-login-time');
+      if (loginTime) {
+        const now = Date.now();
+        const elapsed = (now - parseInt(loginTime, 10)) / 60000; // minutes
+        if (elapsed > SESSION_TIMEOUT_MINUTES) {
+          sessionStorage.clear();
+          navigate('/admin-login?expired=1');
+        }
+      }
+    };
+    checkSession();
+    const interval = setInterval(checkSession, 60000); // check every minute
+    return () => clearInterval(interval);
+  }, [navigate]);
+
+  React.useEffect(() => {
+    // Show session expired message if redirected
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('expired')) {
+      setError('Session expired. Please login again.');
+      sessionStorage.clear();
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,10 +54,10 @@ const AdminLogin = () => {
       const payload = { username, password };
       const res = await axios.post(`${backendUrl}/api/admin/login`, payload);
       if (res.data.success && res.data.token) {
-        localStorage.setItem('admin-auth', 'true');
-        localStorage.setItem('admin-token', res.data.token);
-        // Store username for super admin check
-        localStorage.setItem('admin-username', username);
+        sessionStorage.setItem('admin-auth', 'true');
+        sessionStorage.setItem('admin-token', res.data.token);
+        sessionStorage.setItem('admin-username', username);
+        sessionStorage.setItem('admin-login-time', Date.now().toString());
         navigate('/admin-dashboard');
       } else {
         setError('Invalid credentials');
@@ -39,7 +68,6 @@ const AdminLogin = () => {
       } else {
         setError('Network error, please try again.');
       }
-    } finally {
       setLoading(false);
     }
   };

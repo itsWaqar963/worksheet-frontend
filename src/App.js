@@ -14,8 +14,12 @@ import ManageAdmins from './pages/ManageAdmins';
 
 // Dummy authentication for protected route
 const isAuthenticated = () => {
-  return localStorage.getItem('admin-auth') === 'true';
+  return sessionStorage.getItem('admin-auth') === 'true';
 };
+
+const isSuperAdmin = () => {
+  return sessionStorage.getItem('admin-username') === 'BackendBrew'
+}
 
 function ProtectedRoute({ children }) {
   return isAuthenticated() ? children : <Navigate to="/admin-login" />;

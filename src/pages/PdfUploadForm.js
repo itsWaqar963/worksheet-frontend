@@ -61,7 +61,7 @@ const PdfUploadForm = () => {
       formData.append('ageGroup', ageGroup);
       formData.append('tags', tags);
 
-      const token = localStorage.getItem('admin-token');
+      const token = sessionStorage.getItem('admin-token');
       const res = await axios.post(`${backendUrl}/api/worksheets/upload`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`

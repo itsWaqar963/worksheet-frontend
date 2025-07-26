@@ -31,7 +31,7 @@ const ManagePdfs = () => {
     setDeletingId(id);
     setError('');
     try {
-      const token = localStorage.getItem('admin-token');
+      const token = sessionStorage.getItem('admin-token');
       await axios.delete(`${backendUrl}/api/worksheets/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -82,4 +82,4 @@ const ManagePdfs = () => {
   );
 };
 
-export default ManagePdfs; 
+export default ManagePdfs;
